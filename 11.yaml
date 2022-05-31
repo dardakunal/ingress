@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pepsi-pv
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+        path: /Volumes/Data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pepsi-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+   requests:
+    storage: 2Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: myapp
+  name: myapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - image: httpd:2.4.41-alpine
+        name: http
+        volumeMounts:
+         - name: pepsi-pv
+           mountPath: /tmp/pepsi
+      volumes:
+         - name: pepsi-pv
+           persistentVolumeClaim:
+           claimName: pepsi-pvc
+

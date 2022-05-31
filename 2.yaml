@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: kunal
+  name: kunal
+spec:
+  containers:
+   - image: busybox
+     name: kunal
+     command: ["/bin/sh","-c"]
+     args: ["echo Hi Kunal && sleep 100"]
+
