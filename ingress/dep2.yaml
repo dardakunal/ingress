@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-httpd
+  labels:
+    app: hello-httpd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-httpd
+  template:
+    metadata:
+      labels:
+        app: hello-httpd
+    spec:
+      containers:
+      - name: hello-httpd
+        image: httpd
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-httpd
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: hello-httpd
